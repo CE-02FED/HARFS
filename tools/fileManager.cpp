@@ -7,53 +7,65 @@ FileManager::FileManager(string pName, int pMaxSize) {
 	_name = pName;
 	_size = pMaxSize;
 	_actualSize = 0;
-	_file = 0;
 	_offset = 0;
 }
 
 FileManager::~FileManager() {
-	fclose(_file);
-	free(_file);
 }
 
-void FileManager::open() {
-	_file = fopen(_name.c_str(), "r+b"); 		//Abre archivo
-	if (!_file) {								//Verifica si existe archivo
-		_file = fopen(_name.c_str(), "w+b");	//Crea Archivo si no existe
+/*void FileManager::open() {
+    _file->open(_name.c_str(),ios_base::binary|ios_base::in|ios_base::out); 		//Abre archivo
+    if (!_file) {								//Verifica si existe archivo
+        _file = new ofstream(_name.c_str(),ios_base::binary | ios_base::in | ios_base::out); //Crea Archivo si no existe
 		this->writeInt(-1,1);
 	}
-}
-
-void FileManager::close() {
-	fclose(_file);
-}
-
-
+}*/
 void FileManager::write(string pData, int pOffset, int pSize) {
-	fseek(_file, pOffset, SEEK_SET);
-	fwrite(pData.c_str(), pSize, 1, _file);
+    ofstream* _wFile = new ofstream(_name.c_str(),ios_base::binary | ios_base::in | ios_base::out);
+    const char* buffer= pData.c_str();
+    _wFile->seekp(pOffset,ios_base::beg);
+    _wFile->write(buffer,pSize);
+    _wFile->close();
+    free(_wFile);
 }
 
 void FileManager::writeInt(int pNum, int pOffset) {
-	fseek(_file, pOffset, SEEK_SET);
-	fwrite(&pNum, sizeof(int), pOffset, _file);
+    ofstream* _wFile = new ofstream(_name.c_str(),ios_base::binary | ios_base::in | ios_base::out);
+    const char* buffer= (char*)&pNum;
+    _wFile->seekp(pOffset,ios_base::beg);
+    _wFile->write(buffer,sizeof(int));
+    _wFile->close();
+    free(_wFile);
+}
+void FileManager::printRegister(int initOffSet){
+    cout<<"Clave: "<<(readInt(initOffSet))<<endl;
+    cout<<"Nombre: "<<*(read(initOffSet+4,30))<<endl;
+    cout<<"Apellido: "<<*(read(initOffSet+34,64))<<endl;
+    cout<<"Edad: "<<(readInt(initOffSet+98))<<endl;
+
 }
 
 string* FileManager::read(int pPtr, int pTamano) {
-	char* buffer = (char*) malloc(pTamano);
-	fseek(_file, pPtr, SEEK_SET);
-	fread(buffer, pTamano, 1, _file);
-
+    ifstream* _rFile = new ifstream(_name.c_str(),ios_base::binary | ios_base::in | ios_base::out);
+    char* buffer= (char*)malloc(pTamano);
+    _rFile->seekg(pPtr,ios_base::beg);
+    _rFile->read(buffer,pTamano);
 	string* resultado = new string();
 	resultado->assign(buffer);
-
+    free(buffer);
+    _rFile->close();
+    free(_rFile);
 	return resultado;
 }
 
 int FileManager::readInt(int pPtr) {
+     ifstream* _rFile = new ifstream(_name.c_str(),ios_base::binary | ios_base::in | ios_base::out);
 	int num;
-	fseek(_file, pPtr, SEEK_SET);
-	fread(&num, sizeof(int), 1, _file);
-
-	return num;
+    char* buffer= (char*)malloc(sizeof(int));
+    _rFile->seekg(pPtr,ios_base::beg);
+    _rFile->read(buffer,sizeof(int));
+    num=*((int*)buffer);
+    _rFile->close();
+    free(_rFile);
+    return num;
 }

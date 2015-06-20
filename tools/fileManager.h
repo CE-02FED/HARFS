@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include <stdlib.h>
+#include <fstream>
 using namespace std;
 
 class FileManager {
@@ -14,7 +15,7 @@ private:
 	string _name;		//Nombre de archivo
 	int _size;			//Tamano maximo de archivo
 	int _actualSize;	//Tamano actual de archivo
-	FILE* _file;
+    //FILE* _file;
 	int _offset;
 
 public:
@@ -26,6 +27,7 @@ public:
 	void writeInt(int pNum, int pOffset);
 	string* read(int pPtr, int pTamano);
 	int readInt(int pPtr);
+    void printRegister(int initOffSet);
 
 };
 
