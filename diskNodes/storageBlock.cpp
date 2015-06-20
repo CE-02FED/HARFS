@@ -1,20 +1,50 @@
-/*
- * storageBlock.cpp
- *
- *  Created on: 18/6/2015
- *      Author: ernesto
- */
-
 #include "storageBlock.h"
 
-StorageBlock::StorageBlock()
-{
-	// TODO Auto-generated constructor stub
+StorageBlock::StorageBlock(string pName, int pTipoEstructura, int pTipoRAID) {
+	_name = pName;
+	_tipo = pTipoEstructura;
+	_tipoRaid = pTipoRAID;
+	_esquema = 0;
 
+	/** Estructuras posibles **/
+	_lista = 0;
+	switch (_tipo) {
+		case 1:
+			//_lista = new LinkedList<string>(pName);
+			break;
+			/** Faltan casos **/
+	}
 }
 
-StorageBlock::~StorageBlock()
-{
-	// TODO Auto-generated destructor stub
+void StorageBlock::definirEsquema(Vector<string>* pEsquema) {
+	_esquema = pEsquema;
 }
 
+void StorageBlock::almacenarRegistro(Vector<string>* pDato) {
+	Vector<string>* datosOrganizados = new Vector<string>(_esquema->getHeight(),
+			_esquema->getWidth() + 1);
+
+	int j;
+	for (int i = 0; i < datosOrganizados->getHeight(); i++) {
+		for (j = 0; j < _esquema->getWidth(); j++) {
+			(*datosOrganizados)[i][j] = (*_esquema)[i][j];
+		}
+		(*datosOrganizados)[i][j] = *(*pDato)[j];
+	}
+
+	switch (_tipo) {
+		case 1:
+			//_lista->insertar(datosOrganizados);
+			break;
+
+	}
+}
+
+void StorageBlock::borrarRegistro(int pDesplazamiento) {
+}
+
+void StorageBlock::buscar(int pClave) {
+}
+
+void StorageBlock::obtenerRegistro(int pDesplazamiento) {
+}

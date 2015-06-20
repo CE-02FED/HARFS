@@ -1,5 +1,8 @@
 #ifndef TOOLS_FILEMANAGER_H_
 #define TOOLS_FILEMANAGER_H_
+
+
+
 #include <stdio.h>
 #include <string>
 #include <iostream>
@@ -18,8 +21,11 @@ public:
 	FileManager(string pName, int pMaxSize);
 	~FileManager();
 	void open();
+	void close();
 	void write(string pData, int pOffset, int pSize);
+	void writeInt(int pNum, int pOffset);
 	string* read(int pPtr, int pTamano);
+	int readInt(int pPtr);
 
 };
 
