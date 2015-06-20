@@ -1,6 +1,7 @@
 #include <iostream>
+#include <stdio.h>
 #include "res/list.h"
-#include "tools/fileManager.h"
+//#include "tools/fileManager.h"
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -11,6 +12,25 @@ int main(int argc, char *argv[]) {
 
 	 else {*/
 	cout << "== High Availability Register File System ==" << endl << endl;
+
+//	FILE* file = fopen("putGet.bin", "w+b");
+//
+//	fseek(file, 0, SEEK_SET);
+//	fputs("Hola", file);
+//	fputs("Mundo", file);
+//	fprintf(file, "%d", 1024);
+//
+//	char* cadena = (char*) malloc(10);
+//	string cad, cad2;
+//
+//	fseek(file, 0, SEEK_SET);
+//	fgets(cadena, 5, file);
+//	cad.assign(cadena);
+//	fseek(file, 9, SEEK_SET);
+//	fgets(cadena, 5, file);
+//	cad2.assign(cadena);
+//
+//	cout << cad <<" "+ cad2 <<  endl;
 
 	//LinkedList* lis = new LinkedList("LISTA.bin");
 	List* lista = new List("test/primer.bin");
@@ -41,25 +61,27 @@ int main(int argc, char *argv[]) {
 	file->open();
 
 	/*file->writeInt(20, 1);
-	file->writeInt(20, 5);
-	file->writeInt(-1, 9);
+	 file->writeInt(20, 5);
+	 file->writeInt(-1, 9);
 
-	file->writeInt(100, 20);
-	file->write((*datos)[0][3], 24, stoi((*datos)[0][2]));
-	file->write((*datos)[1][3], 54, stoi((*datos)[1][2]));
-	file->writeInt(stoi((*datos)[2][3]), 54 + 64);
-	file->writeInt(-1, 54 + 64 + 4);*/
+	 file->writeInt(100, 20);
+	 file->write((*datos)[0][3], 24, stoi((*datos)[0][2]));
+	 file->write((*datos)[1][3], 54, stoi((*datos)[1][2]));
+	 file->writeInt(stoi((*datos)[2][3]), 54 + 64);
+	 file->writeInt(-1, 54 + 64 + 4);*/
 
 	cout << "Header: " << file->readInt(1) << "| ";
 	cout << file->readInt(5) << "| ";
-	cout << file->readInt(9) << endl;
+	cout << file->readInt(9) << endl << endl;
 
 	cout << "Tabla:" << endl;
 	cout << file->readInt(20) << endl;
 	cout << *(file->read(24, 30)) << endl;
 	cout << *(file->read(54, 64)) << endl;
 	cout << file->readInt(118) << endl;
-	cout << file->readInt(122) << endl << endl;
+	cout << file->readInt(122) << endl;
+	cout << file->readInt(126) << endl << endl;
+
 	file->close();
 
 	/*cout << "Escribiendo..." << endl;
