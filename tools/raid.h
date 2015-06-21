@@ -2,8 +2,9 @@
 #include "fileManager.h"
 #include <string>
 #include <iostream>
-//#include "userAsistant.h"
 
+#define mil 1000
+#define nameRaid "RAID0"
 using namespace std;
 
 class RAID{
