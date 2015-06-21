@@ -17,14 +17,14 @@ private:		//Atributos
 
 
 public:			//Metodos
+    string getName();
 	StorageBlock();
-	StorageBlock(string pName, int pTipoEstructura, int pTipoRAID);
-	~StorageBlock();
+    StorageBlock(string pName, int pTipoEstructura, int pTipoRAID);	
 	void definirEsquema(Vector<string>* pEsquema);
 	void almacenarRegistro(Vector<string>* pDato);
 	void borrarRegistro(int pDesplazamiento);
-	void buscar(int pClave);
-	void obtenerRegistro(int pDesplazamiento);
+    string buscar(string pClave, string pColumna);
+    string obtenerRegistro(int pDesplazamiento);
 };
 
 #endif /* RES_STORAGEBLOCK_H_ */

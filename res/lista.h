@@ -1,181 +1,218 @@
+/**
+ *
+ */
+
 #ifndef LISTA_H_
 #define LISTA_H_
-
 #include <stdlib.h>
+#include "nodos.h"
 #include <iostream>
-
-#include "nodoBak.h"
 using namespace std;
-
 /**
- * 	@class Lista
- * 	@brief Lista doblemente enlazada
+ * Clase lista simple. Es una estructura dinámica de almacenamiento de datos,
+ * es genérica por lo que puede
+ * almacenar cualquier tipo de datos.
  */
-template<class T> class Lista {
-public:
-	Lista();						//Constructor
-	~Lista();						//Destructor
-	void insertarFinal(T dato);		//Inserta un elemento al final
-	void insertarInicio(T dato);	//Inserta un elemento al inicio
-	void print();					//Imprime la lista en consola
-	NodoBak<T>* getPrimer();			//Obtener el primer elemento
-	NodoBak<T>* getUltimo();			//Obtener el ultimo elemento
-	NodoBak<T>* getElemento(int ind);	//Obtener elemento del indice
-	void borrarElemento(int ind);	//Borrar elemento de la lista
-private:
-	NodoBak<T>* primer;				//Primer nodo de la lista
-	NodoBak<T>* ultimo;				//Ultimo nodo de la lista
-	bool vacia();					//Verifica si esta vacia la lista
-	int contador;					//Contador de elementos
-	void sumInd(NodoBak<T>* nodo);		//Suma indices
-	void resInd(NodoBak<T>* nodo);		//Resta indices
+template <typename datoGenerico> class lista {
+	private:
+		/**	variable para saber el numero de elementos	 */
+		int numEle;
+		/**	puntero al primer nodo de la lista	 */
+		nodo<datoGenerico>* head;
+		/**	puntero al ultimo nodo de la lista	 */
+		nodo<datoGenerico>* tail;
+
+	public:
+		//metodos
+		/**metodo que busca una posicion de la lista.
+		 * @param pPosicion posicion que se busca en la lista.
+		 * @return puntero al nodo buscado.	 */
+		nodo<datoGenerico>* getNodo(int pPosicion){ //metodo para obtener un puntero a un nodo
+			if (pPosicion<numEle && pPosicion>=0){ //validacion de que no este fuera de rango
+				nodo<datoGenerico>* ptrNodoTmp=head; //variable temporal apunta al head
+				for(int i=0;i<pPosicion;i++){//mueve la variable temporal el numero de veces necesario
+					ptrNodoTmp=(*ptrNodoTmp).getSiguiente();
+				}
+				return ptrNodoTmp;//retorna el nodo
+			}
+			else if (numEle!=0){
+				cout <<"fuera de rango"<< endl;
+				return 0;
+			}
+			else{
+				cout <<"Error, lista vacia "<< endl;
+				return 0; ///revisar esto!!!!!!
+			}
+		}
+		datoGenerico* getElemento(int pos){
+			nodo<datoGenerico>* nodoTmp=getNodo(pos);
+			if(nodoTmp!=0){
+				return nodoTmp->getDato();
+			}
+			else{
+				cout<<"error, no se encontro el elemento"<<endl;
+				return 0;
+			}
+		}
+		/**
+		 * Construcor. Inicializa las variables, y los punteros en nulo.
+		 */
+		lista(){
+            numEle=0; //inicializa el numero de elementos de la lista
+            head=0;//inicializa el head en nulo
+            tail=0;//inicializa el tail en nulo
+		}
+		/**
+		 * Devuelve el numero de elementos.
+		 * @return numEle el numero de elementos.
+		 */
+		int getNumEle(){
+			return numEle;
+		}
+		/** Agrega un elemento al final de la lista.
+		 * Crea un nodo para el elemento, lo mete ahí
+		 * y luego inserta el nodo en la lista.
+		 * @param elemento el elemento que se quiere ingresar.
+		 */
+		void agregarFinal(datoGenerico* elemento){//agrega un elemento al final
+			nodo<datoGenerico>* nodoInsertar= new nodo<datoGenerico>(elemento);//crea un nodo para el elemento
+			if (numEle>0){//cuando hay varios elementos
+				(*tail).setSiguiente(nodoInsertar);//al nodo final le pone como siguiente el nodo creado
+				tail=nodoInsertar;//se mueve el tail al nuevo nodo
+			}
+			else if (numEle==0){//si la lista está vacia
+				tail=nodoInsertar;//el tail apunta al nodo
+				head=tail;//el head apunta al nodo
+			}
+			else{ //si algo sale mal no hace nada
+				return;
+			}
+			numEle++;//aumenta el numero de elementos
+		}
+		/**	Agrega un elemento al inicio de la lista. Crea un
+		 * nodo para el elemento, lo introduce en el y luego
+		 * inserta el nodo el la lista.
+		 *  @param elemento el elemento que se desea agregar.
+		 */
+		void agregarInicio(datoGenerico* elemento){//agrega un elemento al inicio
+			nodo<datoGenerico>* nodoInsertar= new nodo<datoGenerico>(elemento);//crea un nodo para el elemento
+			if(numEle>0){//si la lista tiene elementos
+				(*nodoInsertar).setSiguiente(head);//al nodo creado se le pone siguiente el head
+				head=nodoInsertar;//el head apunta al nodo creado
+			}
+			else if (numEle==0){//si la lista está vacia
+				tail=nodoInsertar;//tail apunta al nodo
+				head=tail;//head apunta al nodo
+			}
+			else{//si algo sale mal no hace nada
+				return;
+			}
+			numEle++;//aumenta el numero de elementos
+		}
+		void agregar(datoGenerico* elemento,int pos){
+			if(pos>numEle||pos<0){
+				cout<<"metodo agregar fuera de rango"<< endl;
+				return;
+			}
+			else if (pos==0){
+				agregarInicio(elemento);
+				return;
+			}
+			else if (pos==numEle){
+				agregarFinal(elemento);
+				return;
+			}
+			else{
+				nodo<datoGenerico>* nodoInsertar=new nodo<datoGenerico>(elemento);
+				nodo<datoGenerico>* nodoAnterior=head;
+				for(int i=0; i<pos-1;i++){
+					nodoAnterior=nodoAnterior->getSiguiente();
+				}
+				nodoInsertar->setSiguiente(nodoAnterior->getSiguiente());
+				nodoAnterior->setSiguiente(nodoInsertar);
+			}
+			numEle++;//aumenta el numero de elementos
+
+		}
+
+		/** Elimina el ultimo elemento de la lista. */
+		void eliminarFinal(){//elimina el tail
+			if (numEle!=0){
+					delete tail;//borra el tail
+					numEle--;//disminuye el numero de elementos
+
+				if (numEle>0){//luego de eliminar el tail la lista sigue teniendo elementos
+
+					tail=this->getNodo(numEle-1);//el tail es el ultimo
+					(*tail).setSiguiente(tail);//el siguiente del tail se pone apuntando a si mismo
+					return;
+				}
+				else {//si luego de borrar el tail no quedan elementos
+					head=0;//head apunta a nullo
+					tail=0;//tail apunta a nulo
+					return;
+				}
+			}
+			else{
+				cout<<"lista vacia, no se puede eliminar final"<<endl;
+				return;
+			}
+		}
+		/** Elimina el primer elemento de la lista  */
+		void eliminarInicio(){//elimina el head
+			if (numEle!=0){//si la lista tiene elementos
+				if (numEle==1){
+					delete head;//elimina el head
+					numEle--;//disminuye el numero de elementos
+					head=0;//head es nulo
+					tail=0;//tail es nulo
+					return;
+				}
+				else{
+					nodo<datoGenerico>* nodoTmp=(*head).getSiguiente();//crea un puntero al segundo elemento
+					delete head;//elimina el head
+					numEle--;//disminuye el numero de elementos
+					head=nodoTmp;//el head apunta al segundo elemento
+					return;
+				}
+			}
+			else{
+				cout<<"lista vacia, no se puede eliminar inicio"<<endl;
+				return;
+			}
+		}
+		void eliminar(int pos){
+			if (pos==0){
+				eliminarInicio();
+				return;
+			}
+			else if (pos==numEle-1){
+				eliminarFinal();
+				return;
+			}
+			else{
+				if(pos>=numEle||pos<0){
+					cout<<"metodo eliminar fuera de rango"<< endl;
+					return;
+				}
+				else{
+					nodo<datoGenerico>* nodoAnterior=head;
+					for(int i=0; i<pos-1;i++){
+						nodoAnterior=nodoAnterior->getSiguiente();
+					}
+					nodo<datoGenerico>* nodoBorrar=nodoAnterior->getSiguiente();
+					nodoAnterior->setSiguiente(nodoBorrar->getSiguiente());
+                    //free((void*)nodoBorrar->getDato());
+					numEle--;//disminuye el numero de elementos
+				}
+			}
+		}
+		/*virtual ~lista(){
+			//free(&numEle);
+			free(head);
+			free(tail);
+		}*/
+
 };
-
-/**
- * 	@brief Constructor de la lista
- */
-template<class T> Lista<T>::Lista() {
-	primer = ultimo = 0;
-	contador = 0;
-}
-
-/**
- * 	@brief Destructor de la lista
- */
-template<class T> Lista<T>::~Lista() {
-	free(primer);
-	free(ultimo);
-}
-
-/**
- * 	@brief Inserta un elemento al final
- * 	@param Dato a insetar
- */
-template<class T> void Lista<T>::insertarFinal(T dato) {
-	NodoBak<T>* nodo = (NodoBak<T>*) malloc(sizeof(NodoBak<T> ));
-	new (nodo) NodoBak<T>(dato);
-	if (vacia()) {
-		primer = ultimo = nodo;
-		nodo->setIndice(0);
-		contador++;
-	} else {
-		nodo->setAnterior(ultimo);
-		ultimo->setSiguiente(nodo);
-		ultimo = nodo;
-		nodo->setIndice(contador);
-		contador++;
-	}
-}
-
-/**
- * 	@brief Inserta un elemento al inicio
- * 	@param Dato a insetar
- */
-template<class T> void Lista<T>::insertarInicio(T dato) {
-	NodoBak<T>* nodo = (NodoBak<T>*) malloc(sizeof(NodoBak<T> ));
-	new (nodo) NodoBak<T>(dato);
-	if (vacia()) {
-		primer = ultimo = nodo;
-		nodo->setIndice(0);
-		contador++;
-	} else {
-		nodo->setSiguiente(primer);
-		primer->setAnterior(nodo);
-		sumInd(primer);
-		primer = nodo;
-		contador++;
-	}
-}
-
-/**
- * 	@brief Borra un elemento de la lista
- */
-template<class T> void Lista<T>::borrarElemento(int ind) {
-	NodoBak<T>* actual = primer;
-	while (actual != 0) {
-		if (((int) actual->getIndice()) != ind) {
-			actual = actual->getSiguiente();
-		} else {
-			resInd(actual->getSiguiente());
-			NodoBak<T>* aux = actual->getAnterior();
-			if (aux != 0)
-				aux->setSiguiente(actual->getSiguiente());
-			aux = actual->getSiguiente();
-			if (aux != 0)
-				aux->setAnterior(actual->getAnterior());
-			break;
-		}
-	}
-}
-
-/**
- * 	@brief Suma indices desde un nodo
- */
-template<class T> void Lista<T>::sumInd(NodoBak<T>* nodo) {
-	NodoBak<T>* actual = nodo;
-	while (actual != 0) {
-		actual->setIndice(actual->getIndice() + 1);
-		actual = actual->getSiguiente();
-	}
-}
-
-/**
- * 	@brief Resta indices desde un nodo
- */
-template<class T> void Lista<T>::resInd(NodoBak<T>* nodo) {
-	NodoBak<T>* actual = nodo;
-	while (actual != 0) {
-		actual->setIndice(actual->getIndice() - 1);
-		actual = actual->getSiguiente();
-	}
-}
-
-/**
- * 	@brief Obtiene primer elemento
- */
-template<class T> NodoBak<T>* Lista<T>::getPrimer() {
-	return primer;
-}
-
-/**
- * 	@brief Obtiene ultimo elemento
- */
-template<class T> NodoBak<T>* Lista<T>::getUltimo() {
-	return ultimo;
-}
-
-template<class T> NodoBak<T>* Lista<T>::getElemento(int ind) {
-	NodoBak<T>* actual = primer;
-	while (actual != 0) {
-		if (actual->getIndice() != ind)
-			actual = actual->getSiguiente();
-		else
-			return actual;
-	}
-}
-
-/**
- * 	@brief Imprime la lista en consola
- */
-template<class T> void Lista<T>::print() {
-	if (!vacia()) {
-		NodoBak<T>* actual = primer;
-		while (*(actual->getDato()) != 0) {
-			cout << "| " << *(actual->getDato()) << endl;
-			actual = actual->getSiguiente();
-		}
-	} else
-		cout << "Lista vacia" << endl;
-}
-
-/**
- * 	@brief Verficia si esta vacia la lista
- */
-template<class T> bool Lista<T>::vacia() {
-	if (primer == 0 and ultimo == 0) {
-		return true;
-	} else
-		return false;
-}
 
 #endif /* LISTA_H_ */

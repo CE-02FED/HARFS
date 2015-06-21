@@ -1,5 +1,10 @@
 #include "storageBlock.h"
 
+string StorageBlock::getName()
+{
+    return _name;
+}
+
 StorageBlock::StorageBlock(string pName, int pTipoEstructura, int pTipoRAID) {
 	_name = pName;
 	_tipo = pTipoEstructura;
@@ -43,8 +48,9 @@ void StorageBlock::almacenarRegistro(Vector<string>* pDato) {
 void StorageBlock::borrarRegistro(int pDesplazamiento) {
 }
 
-void StorageBlock::buscar(int pClave) {
+string StorageBlock::buscar(string pClave, string pColumna) {
 }
 
-void StorageBlock::obtenerRegistro(int pDesplazamiento) {
+string StorageBlock::obtenerRegistro(int pDesplazamiento)
+{
 }
