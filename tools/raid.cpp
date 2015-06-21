@@ -24,7 +24,7 @@ void RAID::write(int pDato, int pOffSet){
 }
 
 string RAID::read(int pOffSet,int pSize){
-    return _file->read(pOffSet,pSize);
+    return *(_file->read(pOffSet,pSize));
 }
 
 int RAID::read(int pOffSet){
