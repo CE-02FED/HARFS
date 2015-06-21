@@ -1,8 +1,8 @@
 #include "raid.h"
-RAID::RAID(bool pFlag, FileManager* pFile){
+RAID::RAID(bool pFlag, string pName){
     RFlag=pFlag;
-    _file=pFile;
-    RDisk=_file->getFileName()+"RAID0";
+    _file=new FileManager(pName,mil) ;
+    RDisk=_file->getFileName()+nameRaid;
     if(RFlag){
         RFile= new FileManager(RDisk,_file->getSize());
     }
@@ -24,7 +24,7 @@ void RAID::write(int pDato, int pOffSet){
 }
 
 string RAID::read(int pOffSet,int pSize){
-    return _file->read(pOffSet,pSize);
+    return *(_file->read(pOffSet,pSize));
 }
 
 int RAID::read(int pOffSet){

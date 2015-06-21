@@ -2,13 +2,14 @@
 #include "fileManager.h"
 #include <string>
 #include <iostream>
-//#include "userAsistant.h"
 
+#define mil 1000
+#define nameRaid "RAID0"
 using namespace std;
 
 class RAID{
 public:
-    RAID(bool pFlag, FileManager* file);
+    RAID(bool pFlag, string pName);
     void write(string pDato,int pOffSet,int pSize);
     void write(int pDato, int pOffSet);
 
