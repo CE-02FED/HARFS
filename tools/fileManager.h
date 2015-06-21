@@ -28,7 +28,8 @@ public:
 	string* read(int pPtr, int pTamano);
 	int readInt(int pPtr);
     void printRegister(int initOffSet);
-
+    string getFileName();
+    int getSize();
 };
 
 #endif /* TOOLS_FILEMANAGER_H_ */
