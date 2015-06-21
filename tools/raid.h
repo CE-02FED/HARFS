@@ -9,7 +9,7 @@ using namespace std;
 
 class RAID{
 public:
-    RAID(bool pFlag, FileManager* file);
+    RAID(bool pFlag, string pName);
     void write(string pDato,int pOffSet,int pSize);
     void write(int pDato, int pOffSet);
 
