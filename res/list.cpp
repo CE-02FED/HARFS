@@ -7,7 +7,6 @@ List::List(string pName) {
 }
 
 List::~List() {
-    delete this;
 }
 
 void List::insertar(Vector<string>* datos) {
@@ -16,12 +15,12 @@ void List::insertar(Vector<string>* datos) {
     //_file->open();
 
     /** Asigna como registro siguiente, si fuera necesario **/
-    if (_file->readInt(primer) != -1)
-        _file->writeInt(espacio, posRelativa - 4);
+    if (_file->read(primer) != -1)
+        _file->write(espacio, posRelativa - 4);
 
 
     /** Clave de registro **/
-    _file->writeInt(_index, posRelativa);
+    _file->write(_index, posRelativa);
     posRelativa += 4;
     _index++;
 
@@ -31,33 +30,33 @@ void List::insertar(Vector<string>* datos) {
             _file->write((*datos)[i][3], posRelativa, stoi((*datos)[i][2]));
             posRelativa += stoi((*datos)[i][2]);
         } else if ((*datos)[i][1] == "int") {
-            _file->writeInt(stoi((*datos)[i][3]), posRelativa);
+            _file->write(stoi((*datos)[i][3]), posRelativa);
             posRelativa += stoi((*datos)[i][2]);
         }
     }
 
     /** Asigna registro siguiente vacio **/
-    _file->writeInt(-1, posRelativa);
+    _file->write(-1, posRelativa);
     posRelativa += 4;
 
     /** Establece nuevo primer registro vacio **/
     espacio = posRelativa;
     // _file->writeInt(21, 5);
-    _file->writeInt(-1, posRelativa);
+    _file->write(-1, posRelativa);
 
-    _file->writeInt(20, 1);
+    _file->write(20, 1);
    // _file->close();
 }
 
 void List::archivoInicial() {
    // _file->open();
-    if (_file->readInt(1) == -1) {
-        _file->writeInt(0, 1); // entero a escribir, desplazamiento
-        _file->writeInt(20, 5);
-        _file->writeInt(-1, 20);
+    if (_file->read(1) == -1) {
+        _file->write(0, 1); // entero a escribir, desplazamiento
+        _file->write(20, 5);
+        _file->write(-1, 20);
     }
-    primer = _file->readInt(1);
-    espacio = _file->readInt(5);
+    primer = _file->read(1);
+    espacio = _file->read(5);
     //_file->close();
 }
 

@@ -37,6 +37,7 @@ void FileManager::writeInt(int pNum, int pOffset) {
     _wFile->close();
     free(_wFile);
 }
+
 void FileManager::printRegister(int initOffSet){
     cout<<"Clave: "<<(readInt(initOffSet))<<endl;
     cout<<"Nombre: "<<*(read(initOffSet+4,30))<<endl;
