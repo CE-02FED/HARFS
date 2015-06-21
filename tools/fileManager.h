@@ -1,9 +1,5 @@
 #ifndef TOOLS_FILEMANAGER_H_
 #define TOOLS_FILEMANAGER_H_
-
-
-
-#include <stdio.h>
 #include <string>
 #include <iostream>
 #include <stdlib.h>
@@ -15,8 +11,7 @@ private:
 	string _name;		//Nombre de archivo
 	int _size;			//Tamano maximo de archivo
 	int _actualSize;	//Tamano actual de archivo
-    //FILE* _file;
-	int _offset;
+	fstream _file;
 
 public:
 	FileManager(string pName, int pMaxSize);
@@ -25,7 +20,7 @@ public:
 	void close();
 	void write(string pData, int pOffset, int pSize);
 	void writeInt(int pNum, int pOffset);
-	string* read(int pPtr, int pTamano);
+	string read(int pPtr, int pTamano);
 	int readInt(int pPtr);
     void printRegister(int initOffSet);
     string getFileName();
